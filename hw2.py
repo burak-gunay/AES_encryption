@@ -9,16 +9,14 @@ def generate():
     key_file.write(os.urandom(32))
     key_file.close()
 def encrypt(msg_filename):
-    #One of the things, generate a new iv for each encryption and save it accordingly.
     msg_file = open(msg_filename,'rb')
     plaintext = msg_file.read()
-
     key_file = open('AESkey.key','rb')
     key = key_file.read()
 
     #Now, also make a corresponding iv
     iv = os.urandom(16)
-    iv_file = open(msg_filename + 'IV.iv','wb')
+    iv_file = open(msg_filename +'.enc.iv','wb')
     iv_file.write(iv)
 
     padder = padding.PKCS7(256).padder()
@@ -29,7 +27,7 @@ def encrypt(msg_filename):
     cipher = Cipher(algorithms.AES(key),modes.CBC(iv),backend = backend)
     encryptor = cipher.encryptor()
     ct = encryptor.update(padded_plaintext) + encryptor.finalize()
-
+    
     encrypted_file = open(msg_filename + '.enc','wb')
     encrypted_file.write(ct)
     
@@ -39,26 +37,30 @@ def encrypt(msg_filename):
     encrypted_file.close()
     pass
 def decrypt(msg_filename):
-    encrypted_file = open(msg_filename + '.enc','rb')
+    encrypted_file = open(msg_filename ,'rb')
     padded_ciphertext = encrypted_file.read()
 
     key_file = open('AESkey.key','rb')
     key = key_file.read()
     
-    iv_file = open(msg_filename + 'IV.iv','rb')
+    iv_file = open(msg_filename + '.iv','rb')
     iv = iv_file.read()
 
     backend = default_backend()
     cipher = Cipher(algorithms.AES(key),modes.CBC(iv),backend = backend)
     decryptor = cipher.decryptor()
 
+    decrypted_msg = decryptor.update(padded_ciphertext) + decryptor.finalize()
     unpadder = padding.PKCS7(256).unpadder()
-    ciphertext = unpadder.update(padded_ciphertext)
-    ciphertext += unpadder.finalize()
+    ciphertext = unpadder.update(decrypted_msg) + unpadder.finalize()
 
-    decrypted_msg = decryptor.update(ct) + decryptor.finalize()
-    print(decrypted_msg)
-    
+    print("Your decrypted message is saved in:{}".format(msg_filename + '.DECRYPTED'));
+    decrypted_file = open(msg_filename + 'DECRYPTED','wb')
+    decrypted_file.write(ciphertext)
+
+    key_file.close()
+    iv_file.close()
+    decrypted_file.close()
     pass
     
 if __name__ == "__main__":
