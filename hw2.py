@@ -65,17 +65,16 @@ def decrypt(msg_filename):
     
 if __name__ == "__main__":
     if (sys.argv[1] == 'generate'):
-        print("Generate key please")
         generate()
+        print("Key generated")
         pass
     elif (sys.argv[1] == 'encrypt'):
         if (len(sys.argv) != 3):
             raise Exception('encrypt usage is like: python3 hw2.py encrypt FILENAME.EXTENSION')
-        print("Encrypt please")
+        print("File Encrypted")
         encrypt(sys.argv[2])
         pass
     elif (sys.argv[1] == 'decrypt'):
-        print("Decrypt please")
         if (len(sys.argv) != 3):
             raise Exception('decrypt usage is like: python3 hw2.py decrypt FILENAME.EXTENSION')
         decrypt(sys.argv[2])
