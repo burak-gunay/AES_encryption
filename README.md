@@ -1,6 +1,6 @@
 # Secret Messages
 Source code is in hw2.py
-In order to use this tool, ensure you have Python's cryptography package installed.
+In order to use this tool, ensure you have Python's cryptography package installed. sourcing 
 
 Initially, you will need to generate a key. To do so, write in the shell;
 
@@ -27,3 +27,6 @@ python3 hw2.py decrypt ENCRYPTEDFILE #Last argument should be FILENAME.EXTENSION
 The program is expecting to receive the same filename for the encrypted file as it generated, FILENAME.enc. When this is complete, it will save the decrypted message as FILENAME.encDECRYPTED.
 
 I've provided a sample file called file.txt to test it out.
+
+Sources:
+The examples in the Cyrptography page[https://cryptography.io/en/latest/], specifically about the implementation of AES and Symmetric Key Padding
